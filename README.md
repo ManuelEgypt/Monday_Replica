@@ -69,4 +69,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Features
 
-- drag tasks from one group to another
+- [x] drag tasks from one group to another
+- [x] drag tasks betw
