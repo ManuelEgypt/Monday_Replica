@@ -69,5 +69,20 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Features
 
-- [x] drag tasks from one group to another
-- [x] drag tasks betw
+- [x] Drag tasks from one group to desired position of another group
+- [x] Drag to reorder tasks in the same group
+- [ ] Drag to reorder groups
+- [x] Collapsible Groups
+- [x] Edit Task content
+- [ ] Add Task owner
+- [ ] Edit Task owner
+- [ ] Add Task status
+- [ ] Edit Task status
+- [ ] Add Task dueDate
+- [ ] Edit Task dueDate
+- [ ] Add Task priority
+- [ ] Edit Task priority
+- [x] Add new task
+- [ ] Remove existing task
+- [x] Change color of group
+- [x] Edit Group Title
