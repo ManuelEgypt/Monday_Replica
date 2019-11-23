@@ -86,5 +86,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - [ ] Remove existing task
 - [x] Change color of group
 - [x] Edit Group Title
-- [x] Add new Group
-- [x] Remove Existing Group
+- [ ] Add new Group
+- [ ] Remove Existing Group
+
+### UI/UX Features
+
+- [ ]
