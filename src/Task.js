@@ -17,9 +17,10 @@ const ContentSection = styled.div`
   display: flex;
 `;
 const OwnerSection = styled.div`
-  width: 100px;
-  padding: 8px;
+  width: 45px;
   border: 2px solid white;
+  height: 35px;
+  height: 40px;
 `;
 
 // const draggableSnapshot = {
@@ -35,7 +36,8 @@ const OwnerSection = styled.div`
 class Task extends React.Component {
   state = {
     editMode: false,
-    taskContent: this.props.task.content
+    taskContent: this.props.task.content,
+    deleteMode: false
   };
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -57,11 +59,37 @@ class Task extends React.Component {
             <div
               style={{
                 backgroundColor: this.props.color,
-                height: 35,
-                width: 8,
+                height: 40,
+                width: `${this.state.deleteMode ? "30px" : "12px"}`,
                 position: "reative",
                 border: "3px solid white",
-                right: 10
+                right: 5
+              }}
+            ></div>
+
+            <img
+              src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
+              style={{
+                height: 20,
+                width: 20,
+                position: "absolute",
+                left: 22,
+                marginTop: 10,
+                opacity: `${this.state.deleteMode ? "1" : "0"}`
+              }}
+            ></img>
+            <div
+              onClick={() =>
+                this.props.removeTask(this.props.task.id, this.props.group)
+              }
+              onMouseOver={() => this.setState({ deleteMode: true })}
+              onMouseLeave={() => this.setState({ deleteMode: false })}
+              style={{
+                position: "absolute",
+                backgroundColor: "green",
+                opacity: 0,
+                width: 35,
+                height: 40
               }}
             ></div>
             <ContentSection
@@ -114,29 +142,46 @@ class Task extends React.Component {
                       this.state.editModeFocus
                         ? {
                             marginLeft: 17,
-                            width: 10,
-                            height: 10,
+                            width: 20,
+                            height: 20,
                             opacity: 1,
                             backgroundColor: "lightGrey",
                             padding: "6px",
                             position: "relative",
-                            right: 17
+                            right: 17,
+                            bottom: 2
                           }
                         : {
                             marginLeft: 17,
-                            width: 10,
-                            height: 10,
+                            width: 20,
+                            height: 20,
                             opacity: 0.5,
                             padding: "6px",
                             position: "relative",
-                            right: 17
+                            right: 17,
+                            bottom: 2
                           }
                     }
                   ></img>
                 ) : null}
               </div>
             </ContentSection>
-            <OwnerSection> {this.props.task.owner}</OwnerSection>
+            <OwnerSection>
+              {" "}
+              <img
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: 20,
+                  border: "1px solid black",
+                  position: "relative",
+                  top: 3,
+                  opacity: 0.8,
+                  left: 6
+                }}
+                src={this.props.task.ownerPic}
+              ></img>
+            </OwnerSection>
           </Container>
         )}
       </Draggable>

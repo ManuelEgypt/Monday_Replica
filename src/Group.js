@@ -41,6 +41,7 @@ class Group extends React.Component {
     showButton: false,
     itemName: "",
     showAdd: "",
+    showDelete: false,
     editTitle: false,
     titleName: this.props.group.title,
     showEdit: false,
@@ -114,8 +115,8 @@ class Group extends React.Component {
                         padding: 5,
                         margin: "3px",
                         marginRight: "12px",
-                        width: 10,
-                        height: 10,
+                        width: 20,
+                        height: 20,
                         backgroundColor: this.state.groupColor,
                         borderRadius: 6
                       }}
@@ -126,44 +127,69 @@ class Group extends React.Component {
                       }
                     ></div>
                   ) : null}
-                  {!this.state.editTitle ? (
-                    <div
-                      onClick={this.handleTitleClick}
-                      onMouseOver={() =>
-                        this.setState({
-                          showEdit: true
-                        })
-                      }
-                      onMouseLeave={() => this.setState({ showEdit: false })}
-                      style={
-                        this.state.showEdit
-                          ? { border: "1px dotted grey", padding: 3 }
-                          : null
-                      }
-                    >
-                      {this.state.titleName}
-                    </div>
-                  ) : (
-                    <ClickAwayListener onClickAway={this.handleClickAway}>
-                      <input
-                        type="text"
-                        name="titleName"
+                  <div
+                    style={{ display: "flex" }}
+                    onMouseLeave={() => this.setState({ showDelete: false })}
+                  >
+                    {this.state.showDelete ? (
+                      <img
+                        onClick={() =>
+                          this.props.removeGroup(this.props.group.id)
+                        }
+                        src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
                         style={{
-                          position: "relative",
-                          width: "50%",
-                          padding: "8px",
-                          bottom: 5,
-                          color: this.state.groupColor,
-                          fontSize: 20,
-                          fontWeight: "400"
+                          height: 20,
+                          width: 20,
+                          marginRight: 5,
+                          marginTop: 3
                         }}
-                        autoFocus={true}
-                        placeholder="Title Name"
-                        value={this.state.titleName}
-                        onChange={this.changeHandler}
-                      />
-                    </ClickAwayListener>
-                  )}
+                      ></img>
+                    ) : null}
+
+                    {!this.state.editTitle ? (
+                      <div style={{ display: "flex" }}>
+                        <div
+                          onClick={this.handleTitleClick}
+                          onMouseOver={() =>
+                            this.setState({
+                              showEdit: true,
+                              showDelete: true
+                            })
+                          }
+                          onMouseLeave={() =>
+                            this.setState({ showEdit: false })
+                          }
+                          style={
+                            this.state.showEdit
+                              ? { border: "1px dotted grey", padding: 3 }
+                              : null
+                          }
+                        >
+                          {this.state.titleName}
+                        </div>
+                      </div>
+                    ) : (
+                      <ClickAwayListener onClickAway={this.handleClickAway}>
+                        <input
+                          type="text"
+                          name="titleName"
+                          style={{
+                            position: "relative",
+                            width: "50%",
+                            padding: "8px",
+                            bottom: 5,
+                            color: this.state.groupColor,
+                            fontSize: 20,
+                            fontWeight: "400"
+                          }}
+                          autoFocus={true}
+                          placeholder="Group Name"
+                          value={this.state.titleName}
+                          onChange={this.changeHandler}
+                        />
+                      </ClickAwayListener>
+                    )}
+                  </div>
                 </Title>
                 {this.state.showButton ? (
                   <>
@@ -207,26 +233,25 @@ class Group extends React.Component {
                             position: "relative",
                             width: "50%",
                             padding: "8px",
-                            bottom: 5
+                            bottom: 7
                           }}
-                          placeholder="Add new Item"
+                          placeholder="Add new Task"
                           value={this.state.itemName}
                           onChange={this.changeHandler}
                         />
 
                         {this.state.itemName ? (
-                          <button
-                            type="submit"
-                            style={{
-                              right: "45px",
-                              height: 35,
-                              position: "relative",
-                              bottom: 5
-                            }}
+                          <img
                             onClick={this.handleAdd}
-                          >
-                            ADD
-                          </button>
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Fairytale_button_add.svg/1024px-Fairytale_button_add.svg.png"
+                            style={{
+                              height: 31,
+                              width: 31,
+                              position: "relative",
+                              right: 40,
+                              bottom: 7
+                            }}
+                          ></img>
                         ) : null}
                       </Form>
                     ) : null}
@@ -236,6 +261,7 @@ class Group extends React.Component {
               {this.state.colorSelectMode ? (
                 <ClickAwayListener onClickAway={this.handleClickAway2}>
                   <ColorSelection
+                    style={{ position: "relative", zIndex: 0 }}
                     changeGroupColor={color => this.changeGroupColor(color)}
                   />
                 </ClickAwayListener>
@@ -261,6 +287,8 @@ class Group extends React.Component {
                       key={task.id}
                       task={task}
                       index={index}
+                      group={this.props.group}
+                      removeTask={this.props.removeTask}
                     />
                   ))}
 

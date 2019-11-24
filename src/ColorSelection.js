@@ -97,7 +97,7 @@ class ColorSelection extends React.Component {
 
           <div
             style={{
-              backgroundColor: "#5c5c5c",
+              backgroundColor: "#a6abab",
               borderRadius: 20,
               width: 20,
               height: 20,

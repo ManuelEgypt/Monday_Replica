@@ -74,6 +74,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - [ ] Drag to reorder groups
 - [x] Collapsible Groups
 - [x] Add new task
+- [x] Remove existing task
 - [x] Edit Task content
 - [ ] Add Task owner
 - [ ] Edit Task owner
@@ -83,11 +84,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - [ ] Edit Task dueDate
 - [ ] Add Task priority
 - [ ] Edit Task priority
-- [ ] Remove existing task
 - [x] Change color of group
 - [x] Edit Group Title
-- [ ] Add new Group
-- [ ] Remove Existing Group
+- [x] Add new Group
+- [x] Remove Existing Group
 
 ### UI/UX Features
 
