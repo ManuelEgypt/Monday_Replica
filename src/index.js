@@ -12,24 +12,19 @@ class App extends React.Component {
 
   addTask = (group, content) => {
     const newTaskIDs = Array.from(group.taskIDs);
-    // newTaskIDs.splice(this.state.tasks.length - 1, 0, {
-    //   id: this.state.tasks.length + 1,
-    //   content: content,
-    //   owner: "",
-    //   status: "",
-    //   dueDate: "",
-    //   priority: ""
-    // });
 
     newTaskIDs.splice(
       this.state.tasks.length,
       0,
-      String(this.state.tasks.length + 1)
+      String(parseInt(this.state.tasks[this.state.tasks.length - 1].id) + 1)
     );
 
     const newTasks = Array.from(this.state.tasks);
+
     newTasks.splice(this.state.tasks.length, 0, {
-      id: String(this.state.tasks.length + 1),
+      id: String(
+        parseInt(this.state.tasks[this.state.tasks.length - 1].id) + 1
+      ),
       content: content,
       owner: "",
       status: "",
@@ -55,6 +50,39 @@ class App extends React.Component {
     }; //create a new state with the right groups array
     this.setState(newState);
   };
+
+  addGroup = groupName => {
+    const newGroupOrder = Array.from(this.state.groupOrder); // create a copy of groupOrder array
+
+    newGroupOrder.splice(
+      0,
+      0,
+      String(
+        parseInt(this.state.groupOrder[this.state.groupOrder.length - 1]) + 1
+      )
+    ); // add new generated group ID to begining of groupOrder array
+
+    const newGroup = {
+      taskIDs: [],
+      title: groupName,
+      color: "black",
+      id: String(
+        parseInt(this.state.groupOrder[this.state.groupOrder.length - 1]) + 1
+      )
+    }; //create a new group
+
+    const newGroups = Array.from(this.state.groups); // create a copy from groups array
+
+    newGroups.splice(0, 0, newGroup); // add new group to new groups array
+
+    const newState = {
+      ...this.state,
+      groups: newGroups,
+      groupOrder: newGroupOrder
+    }; //create a new state with the new groupOrder and groups array
+    this.setState(newState);
+  };
+
   onDragEnd = result => {
     //   const result = {
     //     draggableId: '1',
@@ -70,6 +98,7 @@ class App extends React.Component {
     // },
     // }
 
+    this.addGroup("Test");
     const { destination, source, draggableId } = result;
     setTimeout(() => console.log("ISDRAG!!", this.state.isDrag), 2000);
 

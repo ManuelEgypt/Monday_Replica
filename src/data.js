@@ -70,7 +70,7 @@ const data = {
       priority: "low"
     },
     {
-      id: "4",
+      id: "7",
       content: "drive a tesla",
       owner: "Musk",
       status: "In Progress",
@@ -82,7 +82,7 @@ const data = {
     {
       id: "1",
       title: "BAIMS",
-      taskIDs: ["1", "2", "3", "4"],
+      taskIDs: ["1", "2", "3", "7"],
       color: "red"
     },
     {
