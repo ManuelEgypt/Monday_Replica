@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Group from "./Group";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { AwesomeButton } from "react-awesome-button";
 import { Form } from "react-bootstrap";
 
@@ -69,10 +69,16 @@ class App extends React.Component {
     let id = 0;
 
     if (this.state.groups.length) {
-      id = String(
-        parseInt(this.state.groups[this.state.groups.length - 1].id) + 1
+      id = "c".concat(
+        String(
+          parseInt(
+            this.state.groups[this.state.groups.length - 1].id.slice(1)
+          ) + 1
+        )
       );
-    } else id = String(1);
+    } else id = "c".concat(String(1));
+
+    console.log("C1!!!!!!!!!!!!!!!!", id);
 
     newGroupOrder.splice(0, 0, id); // add new generated group ID to begining of groupOrder array
 
@@ -85,9 +91,13 @@ class App extends React.Component {
       "#e05aa8",
       "#a6abab",
       "#a6abab",
+      "black",
       "black"
     ];
     const num = Math.floor(Math.random() * 10) + 1 - 1;
+
+    console.log(num);
+
     const newGroup = {
       taskIDs: [],
       title: groupName,
@@ -181,7 +191,7 @@ class App extends React.Component {
     // },
     // }
 
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
     setTimeout(() => console.log("ISDRAG!!", this.state.isDrag), 2000);
 
     if (!destination) {
@@ -195,6 +205,21 @@ class App extends React.Component {
       this.setState({ isDrag: false });
       return;
     }
+
+    if (type === "group") {
+      let newGroupOrder = Array.from(this.state.groupOrder); // create a copy of groupOrder array
+      newGroupOrder.splice(source.index, 1); //remove the group from the groupOrder array
+      newGroupOrder.splice(destination.index, 0, draggableId); //insert the groupId into the destination index (insert to rigth place)
+
+      const newState = {
+        ...this.state,
+        groupOrder: newGroupOrder
+      }; //create a new state with the right groupOrder array
+
+      this.setState(newState);
+      return;
+    }
+
     this.setState({ isDrag: false });
     const startGroup = this.state.groups.find(
       group => group.id === source.droppableId
@@ -291,28 +316,39 @@ class App extends React.Component {
             CREATE NEW GROUP
           </AwesomeButton>
         </div>
+
         <DragDropContext
           onDragStart={() => this.setState({ isDrag: true })}
           //onDragUpdate={() => this.setState({ isDrag: false })}
           onDragEnd={this.onDragEnd}
         >
-          {this.state.groupOrder.map(groupId => {
-            const group = this.state.groups.find(group => group.id === groupId);
-            const tasks = group.taskIDs.map(taskID =>
-              this.state.tasks.find(task => task.id === taskID)
-            );
-            return (
-              <Group
-                isDrag={this.state.isDrag}
-                key={group.id}
-                group={group}
-                tasks={tasks}
-                addTask={this.addTask}
-                removeTask={this.removeTask}
-                removeGroup={this.removeGroup}
-              />
-            );
-          })}
+          <Droppable droppableId="allColumns" type="group">
+            {provided => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {this.state.groupOrder.map((groupId, index) => {
+                  const group = this.state.groups.find(
+                    group => group.id === groupId
+                  );
+                  const tasks = group.taskIDs.map(taskID =>
+                    this.state.tasks.find(task => task.id === taskID)
+                  );
+                  return (
+                    <Group
+                      isDrag={this.state.isDrag}
+                      key={group.id}
+                      group={group}
+                      tasks={tasks}
+                      addTask={this.addTask}
+                      removeTask={this.removeTask}
+                      removeGroup={this.removeGroup}
+                      index={index}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
       </>
     );

@@ -71,7 +71,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 - [x] Drag tasks from one group to desired position of another group
 - [x] Drag to reorder tasks in the same group
-- [ ] Drag to reorder groups
+- [x] Drag to reorder groups
 - [x] Collapsible Groups
 - [x] Add new task
 - [x] Remove existing task

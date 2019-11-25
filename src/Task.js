@@ -52,7 +52,6 @@ class Task extends React.Component {
         {(provided, snapshot) => (
           <Container
             {...provided.draggableProps}
-            {...provided.dragHandleProps} //part of item to be dragged from
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
@@ -95,6 +94,7 @@ class Task extends React.Component {
             <ContentSection
               onMouseOver={() => this.setState({ editMode: true })}
               onMouseLeave={() => this.setState({ editMode: false })}
+              {...provided.dragHandleProps} //part of item to be dragged from
             >
               {this.state.editEnabled ? (
                 <ClickAwayListener onClickAway={this.handleClickAway}>

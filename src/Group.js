@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Task from "./Task";
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 import Collapsible from "react-collapsible";
 import ColorSelection from "./ColorSelection";
 
@@ -89,216 +89,245 @@ class Group extends React.Component {
   render() {
     const Trigger = () => null;
     return (
-      <Container open={this.state.open}>
-        <Droppable droppableId={this.props.group.id}>
-          {(provided, snapshot) => (
-            <>
-              <Head
-                onMouseOver={() =>
-                  this.setState({
-                    showButton: true
-                  })
-                }
-                onMouseLeave={() =>
-                  this.setState({ showButton: false, showEdit: false })
-                }
-                bg={this.state.open}
+      <Draggable draggableId={this.props.group.id} index={this.props.index}>
+        {provided => (
+          <Container
+            open={this.state.open}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+          >
+            <Head
+              onMouseOver={() =>
+                this.setState({
+                  showButton: true
+                })
+              }
+              onMouseLeave={() =>
+                this.setState({ showButton: false, showEdit: false })
+              }
+              bg={this.state.open}
+            >
+              <Title
+                style={{
+                  color: this.state.groupColor
+                }}
               >
-                <Title
-                  style={{
-                    color: this.state.groupColor
-                  }}
-                >
-                  {this.state.showButton ? (
-                    <div
-                      style={{
-                        padding: 5,
-                        margin: "3px",
-                        marginRight: "12px",
-                        width: 20,
-                        height: 20,
-                        backgroundColor: this.state.groupColor,
-                        borderRadius: 6
-                      }}
-                      onClick={() =>
-                        this.setState({
-                          colorSelectMode: !this.state.colorSelectMode
-                        })
-                      }
-                    ></div>
-                  ) : null}
+                {this.state.showButton ? (
                   <div
-                    style={{ display: "flex" }}
-                    onMouseLeave={() => this.setState({ showDelete: false })}
-                  >
-                    {this.state.showDelete ? (
-                      <img
-                        onClick={() =>
-                          this.props.removeGroup(this.props.group.id)
+                    style={{
+                      padding: 5,
+                      margin: "3px",
+                      marginRight: "12px",
+                      width: 20,
+                      height: 20,
+                      backgroundColor: this.state.groupColor,
+                      borderRadius: 6
+                    }}
+                    onClick={() =>
+                      this.setState({
+                        colorSelectMode: !this.state.colorSelectMode
+                      })
+                    }
+                  ></div>
+                ) : null}
+                <div
+                  style={{ display: "flex" }}
+                  onMouseLeave={() => this.setState({ showDelete: false })}
+                >
+                  {this.state.showDelete ? (
+                    <img
+                      onClick={() =>
+                        this.props.removeGroup(this.props.group.id)
+                      }
+                      src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
+                      style={{
+                        height: 20,
+                        width: 20,
+                        marginRight: 5,
+                        marginTop: 3
+                      }}
+                    ></img>
+                  ) : null}
+
+                  {!this.state.editTitle ? (
+                    <div style={{ display: "flex" }}>
+                      <div
+                        onClick={this.handleTitleClick}
+                        onMouseOver={() =>
+                          this.setState({
+                            showEdit: true,
+                            showDelete: true
+                          })
                         }
-                        src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
+                        onMouseLeave={() => this.setState({ showEdit: false })}
+                        style={
+                          this.state.showEdit
+                            ? { border: "1px dotted grey", padding: 3 }
+                            : null
+                        }
+                      >
+                        {this.state.titleName}
+                      </div>
+                    </div>
+                  ) : (
+                    <ClickAwayListener onClickAway={this.handleClickAway}>
+                      <input
+                        type="text"
+                        name="titleName"
                         style={{
-                          height: 20,
-                          width: 20,
-                          marginRight: 5,
-                          marginTop: 3
+                          position: "relative",
+                          width: "50%",
+                          padding: "8px",
+                          bottom: 5,
+                          color: this.state.groupColor,
+                          fontSize: 20,
+                          fontWeight: "400"
                         }}
+                        autoFocus={true}
+                        placeholder="Group Name"
+                        value={this.state.titleName}
+                        onChange={this.changeHandler}
+                      />
+                    </ClickAwayListener>
+                  )}
+                </div>
+              </Title>
+              {this.state.showButton ? (
+                <>
+                  <CollapseButton
+                    onClick={() => this.setState({ open: !this.state.open })}
+                  >
+                    {this.state.open ? (
+                      <img
+                        style={{ width: 25, height: 25 }}
+                        src="https://icon-library.net/images/collapse-expand-icon/collapse-expand-icon-15.jpg"
+                      ></img>
+                    ) : (
+                      <img
+                        style={{ marginTop: 2, width: 25, height: 25 }}
+                        src="https://cdn1.iconfinder.com/data/icons/navigation-arrows/512/arrow-twoside-updown-withoutbg-512.png"
+                      ></img>
+                    )}
+                  </CollapseButton>
+
+                  <CollapseButton
+                    {...provided.dragHandleProps} //part of item to be dragged from
+                  >
+                    {this.state.open ? (
+                      <img
+                        style={{
+                          marginTop: 3,
+                          width: 20,
+                          height: 20
+                        }}
+                        src="https://png.pngtree.com/svg/20170817/drag_icon_633892.png"
                       ></img>
                     ) : null}
+                  </CollapseButton>
 
-                    {!this.state.editTitle ? (
-                      <div style={{ display: "flex" }}>
-                        <div
-                          onClick={this.handleTitleClick}
-                          onMouseOver={() =>
-                            this.setState({
-                              showEdit: true,
-                              showDelete: true
-                            })
-                          }
-                          onMouseLeave={() =>
-                            this.setState({ showEdit: false })
-                          }
-                          style={
-                            this.state.showEdit
-                              ? { border: "1px dotted grey", padding: 3 }
-                              : null
-                          }
-                        >
-                          {this.state.titleName}
-                        </div>
-                      </div>
-                    ) : (
-                      <ClickAwayListener onClickAway={this.handleClickAway}>
-                        <input
-                          type="text"
-                          name="titleName"
-                          style={{
-                            position: "relative",
-                            width: "50%",
-                            padding: "8px",
-                            bottom: 5,
-                            color: this.state.groupColor,
-                            fontSize: 20,
-                            fontWeight: "400"
-                          }}
-                          autoFocus={true}
-                          placeholder="Group Name"
-                          value={this.state.titleName}
-                          onChange={this.changeHandler}
-                        />
-                      </ClickAwayListener>
-                    )}
-                  </div>
-                </Title>
-                {this.state.showButton ? (
-                  <>
-                    <CollapseButton
-                      onClick={() => this.setState({ open: !this.state.open })}
-                    >
-                      {this.state.open ? (
-                        <img
-                          style={{ width: 25, height: 25 }}
-                          src="https://icon-library.net/images/collapse-expand-icon/collapse-expand-icon-15.jpg"
-                        ></img>
-                      ) : (
-                        <img
-                          style={{ marginTop: 2, width: 25, height: 25 }}
-                          src="https://cdn1.iconfinder.com/data/icons/navigation-arrows/512/arrow-twoside-updown-withoutbg-512.png"
-                        ></img>
-                      )}
-                    </CollapseButton>
-                    <CollapseButton
-                      onClick={() =>
-                        this.setState({ showAdd: !this.state.showAdd })
-                      }
-                    >
-                      {this.state.open ? (
-                        <img
-                          style={{ marginTop: 3, width: 20, height: 20 }}
-                          src="https://cdn1.iconfinder.com/data/icons/ui-colored-1/100/UI__2-512.png"
-                        ></img>
-                      ) : null}
-                    </CollapseButton>
+                  <CollapseButton
+                    onClick={() =>
+                      this.setState({ showAdd: !this.state.showAdd })
+                    }
+                  >
+                    {this.state.open ? (
+                      <img
+                        style={{
+                          marginTop: 3,
+                          width: 20,
+                          height: 20
+                        }}
+                        src="https://cdn1.iconfinder.com/data/icons/ui-colored-1/100/UI__2-512.png"
+                      ></img>
+                    ) : null}
+                  </CollapseButton>
 
-                    {this.state.showAdd ? (
-                      <Form
-                        onSubmit={this.submitHandler}
-                        isDrag={this.state.isDrag}
-                      >
-                        <input
-                          type="text"
-                          name="itemName"
+                  {this.state.showAdd ? (
+                    <Form
+                      onSubmit={this.submitHandler}
+                      isDrag={this.state.isDrag}
+                    >
+                      <input
+                        type="text"
+                        name="itemName"
+                        style={{
+                          position: "relative",
+                          width: "50%",
+                          padding: "8px",
+                          bottom: 7
+                        }}
+                        placeholder="Add new Task"
+                        value={this.state.itemName}
+                        onChange={this.changeHandler}
+                      />
+
+                      {this.state.itemName ? (
+                        <img
+                          onClick={this.handleAdd}
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Fairytale_button_add.svg/1024px-Fairytale_button_add.svg.png"
                           style={{
+                            height: 31,
+                            width: 31,
                             position: "relative",
-                            width: "50%",
-                            padding: "8px",
+                            right: 40,
                             bottom: 7
                           }}
-                          placeholder="Add new Task"
-                          value={this.state.itemName}
-                          onChange={this.changeHandler}
-                        />
-
-                        {this.state.itemName ? (
-                          <img
-                            onClick={this.handleAdd}
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Fairytale_button_add.svg/1024px-Fairytale_button_add.svg.png"
-                            style={{
-                              height: 31,
-                              width: 31,
-                              position: "relative",
-                              right: 40,
-                              bottom: 7
-                            }}
-                          ></img>
-                        ) : null}
-                      </Form>
-                    ) : null}
-                  </>
-                ) : null}
-              </Head>
-              {this.state.colorSelectMode ? (
-                <ClickAwayListener onClickAway={this.handleClickAway2}>
-                  <ColorSelection
-                    style={{ position: "relative", zIndex: 0 }}
-                    changeGroupColor={color => this.changeGroupColor(color)}
-                  />
-                </ClickAwayListener>
+                        ></img>
+                      ) : null}
+                    </Form>
+                  ) : null}
+                </>
               ) : null}
+            </Head>
+            <Droppable droppableId={this.props.group.id} type="task">
+              {(provided, snapshot) => (
+                <>
+                  {this.state.colorSelectMode ? (
+                    <ClickAwayListener onClickAway={this.handleClickAway2}>
+                      <ColorSelection
+                        style={{ position: "relative", zIndex: 0 }}
+                        changeGroupColor={color => this.changeGroupColor(color)}
+                      />
+                    </ClickAwayListener>
+                  ) : null}
 
-              <Collapsible
-                trigger={<Trigger />}
-                open={this.state.open}
-                transitionTime={200}
-              >
-                <TaskList
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  isDraggingOver={snapshot.isDraggingOver}
-                  onMouseOver={() =>
-                    this.handleMouseOver2(snapshot.isDraggingOver)
-                  }
-                  onMouseLeave={() => this.setState({ showAdd: false })}
-                >
-                  {this.props.tasks.map((task, index) => (
-                    <Task
-                      color={this.state.groupColor}
-                      key={task.id}
-                      task={task}
-                      index={index}
-                      group={this.props.group}
-                      removeTask={this.props.removeTask}
-                    />
-                  ))}
+                  <Collapsible
+                    trigger={<Trigger />}
+                    open={this.state.open}
+                    transitionTime={200}
+                  >
+                    <TaskList
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      isDraggingOver={snapshot.isDraggingOver}
+                      onMouseOver={() =>
+                        this.handleMouseOver2(snapshot.isDraggingOver)
+                      }
+                      onMouseLeave={() => this.setState({ showAdd: false })}
+                    >
+                      {this.props.tasks.map((task, index) => (
+                        <Task
+                          color={this.state.groupColor}
+                          key={task.id}
+                          task={task}
+                          index={index}
+                          group={this.props.group}
+                          removeTask={this.props.removeTask}
+                        />
+                      ))}
 
-                  {provided.placeholder}
-                </TaskList>
-              </Collapsible>
-            </>
-          )}
-        </Droppable>
-      </Container>
+                      {provided.placeholder}
+                    </TaskList>
+                  </Collapsible>
+                </>
+              )}
+            </Droppable>
+            {/* <div
+              style={{ width: 100, height: 100, backgroundColor: "red" }}
+            ></div> */}
+          </Container>
+        )}
+      </Draggable>
     );
   }
 }

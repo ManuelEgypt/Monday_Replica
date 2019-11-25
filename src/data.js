@@ -88,25 +88,25 @@ const data = {
   ],
   groups: [
     {
-      id: "1",
+      id: "c1",
       title: "BAIMS",
       taskIDs: ["1", "2", "3", "7"],
       color: "red"
     },
     {
-      id: "2",
+      id: "c2",
       title: "CODED",
       taskIDs: [],
       color: "blue"
     },
     {
-      id: "3",
+      id: "c3",
       title: "FOTOMATIC",
       taskIDs: [],
       color: "green"
     }
   ],
-  groupOrder: ["1", "2", "3"]
+  groupOrder: ["c1", "c2", "c3"]
 };
 
 export default data;
