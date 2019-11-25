@@ -29,7 +29,7 @@ class App extends React.Component {
       id = String(
         parseInt(this.state.tasks[this.state.tasks.length - 1].id) + 1
       );
-    } else id = String(1);
+    } else id = String(1); // set new task id to 1 + last task id
 
     newTaskIDs.splice(this.state.tasks.length, 0, id);
 
@@ -49,11 +49,25 @@ class App extends React.Component {
       taskIDs: newTaskIDs
     }; //create a new group with the right taskIDs array order
 
-    const newGroupListMissing = this.state.groups.filter(
-      grp => grp.id != group.id
-    ); //remove old group containing the old taskIDs order from the groups array
+    let index = 0;
 
-    const newGroupList = newGroupListMissing.concat(newGroup); //insert the new group with the right taskIDs order
+    this.state.groups.forEach((grp, ind) => {
+      if (grp.id === group.id) {
+        index = ind;
+      }
+    });
+
+    console.log("index!!!", index);
+
+    const newGroupList = this.state.groups.filter(grp => grp.id != group.id); //remove old group containing the old taskIDs order from the groups array
+
+    console.log("NEW GROUP removed!!!", newGroupList);
+
+    newGroupList.splice(index, 0, newGroup); // add new group to new groups array
+
+    //const newGroupList = newGroupListMissing.concat(newGroup); //insert the new group with the right taskIDs order
+
+    console.log("NEW GROUP!!!", newGroupList);
 
     const newState = {
       ...this.state,
@@ -79,6 +93,7 @@ class App extends React.Component {
     } else id = "c".concat(String(1));
 
     console.log("C1!!!!!!!!!!!!!!!!", id);
+    console.log("state!!!!", this.state);
 
     newGroupOrder.splice(0, 0, id); // add new generated group ID to begining of groupOrder array
 

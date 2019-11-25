@@ -108,6 +108,7 @@ class Group extends React.Component {
               bg={this.state.open}
             >
               <Title
+                {...provided.dragHandleProps}
                 style={{
                   color: this.state.groupColor
                 }}
@@ -211,7 +212,7 @@ class Group extends React.Component {
                   </CollapseButton>
 
                   <CollapseButton
-                    {...provided.dragHandleProps} //part of item to be dragged from
+                  //part of item to be dragged from
                   >
                     {this.state.open ? (
                       <img
