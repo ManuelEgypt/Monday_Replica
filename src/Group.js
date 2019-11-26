@@ -343,24 +343,28 @@ class Group extends React.Component {
             {this.state.open ? (
               <div style={{ display: "flex" }}>
                 <Form.Group style={{ position: "relative", top: 10, left: 10 }}>
-                  <ClickAwayListener
-                    onClickAway={() =>
-                      this.setState({ inputExpand: false, itemName: "" })
-                    }
-                  >
-                    <Form.Control
-                      onKeyDown={this.handleKeyDown}
-                      onClick={() => this.setState({ inputExpand: true })}
-                      required
-                      name="itemName"
-                      onChange={this.changeHandler}
-                      value={this.state.itemName}
-                      type="text"
-                      placeholder="+ ADD"
-                      style={inputStyle}
-                      inputExpand={this.state.inputExpand}
-                    />
-                  </ClickAwayListener>
+                  {!this.state.colorSelectMode ? (
+                    <ClickAwayListener
+                      onClickAway={() =>
+                        this.setState({ inputExpand: false, itemName: "" })
+                      }
+                    >
+                      <Form.Control
+                        onKeyDown={this.handleKeyDown}
+                        onClick={() => this.setState({ inputExpand: true })}
+                        required
+                        name="itemName"
+                        onChange={this.changeHandler}
+                        value={this.state.itemName}
+                        type="text"
+                        placeholder="+ ADD"
+                        style={inputStyle}
+                        inputExpand={this.state.inputExpand}
+                      />
+                    </ClickAwayListener>
+                  ) : (
+                    <div style={{ height: 38.5, width: 20 }}></div>
+                  )}
                 </Form.Group>
                 {this.state.inputExpand ? (
                   <AwesomeButton
