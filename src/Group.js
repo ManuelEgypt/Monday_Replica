@@ -104,14 +104,17 @@ class Group extends React.Component {
   };
 
   handleAdd = () => {
-    this.props.addTask(this.props.group, this.state.itemName);
-    this.setState({ itemName: "" });
+    if (this.state.itemName) {
+      this.props.addTask(this.props.group, this.state.itemName);
+      this.setState({ itemName: "" });
+    }
   };
 
   handleKeyDown = e => {
     if (this.state.inputExpand) {
       if (e.key === "Enter") {
-        this.props.addTask(this.props.group, this.state.itemName);
+        if (this.state.itemName)
+          this.props.addTask(this.props.group, this.state.itemName);
         this.setState({ itemName: "" });
       }
       if (e.key === "Escape") {
@@ -357,11 +360,15 @@ class Group extends React.Component {
                 </Form.Group>
                 {this.state.inputExpand ? (
                   <AwesomeButton
-                    style={{ top: 10, marginBottom: 10, height: 38, right: 52 }}
+                    style={
+                      this.state.itemName
+                        ? { top: 10, marginBottom: 10, height: 38, right: 52 }
+                        : { top: 10, marginBottom: 10, height: 38, right: 62 }
+                    }
                     type="primary"
                     onPress={this.handleAdd}
                   >
-                    ADD
+                    {this.state.itemName ? "ADD" : "CLOSE"}
                   </AwesomeButton>
                 ) : null}
               </div>

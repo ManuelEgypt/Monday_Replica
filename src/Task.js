@@ -6,6 +6,8 @@ import { ClickAwayListener } from "@material-ui/core";
 const Container = styled.div`
   background-color: ${props => (props.isDragging ? "#f2fff5" : "#f2f2f2")};
   opacity: ${props => (props.isDragging ? 0.6 : 1)}
+  border:  ${props =>
+    props.isDragging ? `0.5px solid ${props.color}` : "0px solid blue"}
   transition: background-color 10s ease;
   display: flex
 `;
@@ -54,6 +56,7 @@ class Task extends React.Component {
             {...provided.draggableProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
+            color={this.props.color}
           >
             <div
               style={{
