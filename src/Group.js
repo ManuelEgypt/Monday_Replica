@@ -62,7 +62,8 @@ class Group extends React.Component {
     titleName: this.props.group.title,
     showEdit: false,
     groupColor: this.props.group.color,
-    inputExpand: false
+    inputExpand: false,
+    colorSelectMode: false
   };
 
   handleMouseOver = dragg => {
@@ -329,6 +330,7 @@ class Group extends React.Component {
                           index={index}
                           group={this.props.group}
                           removeTask={this.props.removeTask}
+                          colorSelectMode={this.state.colorSelectMode}
                         />
                       ))}
 
@@ -342,7 +344,9 @@ class Group extends React.Component {
               <div style={{ display: "flex" }}>
                 <Form.Group style={{ position: "relative", top: 10, left: 10 }}>
                   <ClickAwayListener
-                    onClickAway={() => this.setState({ inputExpand: false })}
+                    onClickAway={() =>
+                      this.setState({ inputExpand: false, itemName: "" })
+                    }
                   >
                     <Form.Control
                       onKeyDown={this.handleKeyDown}

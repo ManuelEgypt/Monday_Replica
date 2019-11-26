@@ -4,7 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { ClickAwayListener } from "@material-ui/core";
 
 const Container = styled.div`
-  background-color: ${props => (props.isDragging ? "#f2fff5" : "#f2f2f2")};
+  background-color: #f2f2f2;
   opacity: ${props => (props.isDragging ? 0.6 : 1)}
   border:  ${props =>
     props.isDragging ? `0.5px solid ${props.color}` : "0px solid blue"}
@@ -62,24 +62,29 @@ class Task extends React.Component {
               style={{
                 backgroundColor: this.props.color,
                 height: 40,
-                width: `${this.state.deleteMode ? "30px" : "12px"}`,
+                width: `${
+                  this.state.deleteMode && !this.props.colorSelectMode
+                    ? "30px"
+                    : "12px"
+                }`,
                 position: "reative",
                 border: "3px solid white",
                 right: 5
               }}
             ></div>
-
-            <img
-              src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
-              style={{
-                height: 20,
-                width: 20,
-                position: "absolute",
-                left: 22,
-                marginTop: 10,
-                opacity: `${this.state.deleteMode ? "1" : "0"}`
-              }}
-            ></img>
+            {!this.props.colorSelectMode ? (
+              <img
+                src="https://img.pngio.com/filestop-xpng-x-png-240_240.png"
+                style={{
+                  height: 20,
+                  width: 20,
+                  position: "absolute",
+                  left: 22,
+                  marginTop: 10,
+                  opacity: `${this.state.deleteMode ? "1" : "0"}`
+                }}
+              ></img>
+            ) : null}
             <div
               onClick={() =>
                 this.props.removeTask(this.props.task.id, this.props.group)

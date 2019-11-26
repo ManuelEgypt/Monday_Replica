@@ -91,4 +91,39 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### UI/UX Features
 
-- [ ] null
+- [x] decreased opacity when dragging tasks
+- [x] border appears same color as group color when dragging tasks
+- [x] Task label color changes when dragging to another group
+- [x] Group background becomes grey when dragged on
+- [x] Group Grey background when collapsed
+- [x] Group margin decreases while collapsed
+- [x] new task input opens when selected
+- [x] close button appears when task input opens
+- [x] add button replaces close button when starting typing to add task input
+- [x] press enter to add task after typing
+- [x] nothing happens when pressing enter if add new task input is empty
+- [x] press escape to clear typed text in add task input
+- [x] press outside add task text input to close and clear content
+- [x] group color selection box and collapse button appears when hovering over header
+- [x] delete button appears when hovering over group title
+- [x] edit border appears when hovering over group title
+- [x] pressing on group title enables editing
+- [x] pressing outside group title modifies title and exits editing
+- [x] pressing enter modifies title and exits editing
+- [x] pressing escape discards any changes and exits editing
+- [x] Task content turns blue and edit button appears when hovering over
+- [x] edit button background turns grey and edit border appears when hovering over edit button
+- [x] Pressing on edit button enables task editing
+- [x] Pressing outside task content modifies task content and exits edit mode
+- [ ] pressing enter modifies task content and exits editing
+- [ ] pressing escape discards any changes and exits editing
+- [x] pressing color selection box opens color selection modal
+- [x] selecting color closes color selection modal
+- [x] pressing outside color selection modal closes modal
+- [x] pressing enter when group title imput is empty doenst create group
+- [x] pressing escape discards text in group input
+- [x] creating new group assigns random color to it
+- [x] pressing arrange groups collapses all and only enables group dragging
+- [x] pressing anywhere on screen exits arrange mode and expands groups to its original position
+- [x] after dragging groups exits arrange mode and expands groups to its original position
+- [x] 3D buttons
