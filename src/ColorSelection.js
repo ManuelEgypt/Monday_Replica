@@ -6,7 +6,7 @@ class ColorSelection extends React.Component {
       <div
         style={{
           position: "absolute",
-          marginLeft: 10,
+          marginLeft: 30,
           backgroundColor: "white",
           padding: 10,
           border: "1px solid lightgrey",

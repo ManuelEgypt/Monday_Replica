@@ -45,6 +45,11 @@ class Task extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleDelete = () => {
+    if (!this.props.colorSelectMode)
+      this.props.removeTask(this.props.task.id, this.props.group);
+  };
+
   handleClickAway = () => {
     this.setState({ editEnabled: false });
   };
@@ -86,9 +91,7 @@ class Task extends React.Component {
               ></img>
             ) : null}
             <div
-              onClick={() =>
-                this.props.removeTask(this.props.task.id, this.props.group)
-              }
+              onClick={this.handleDelete}
               onMouseOver={() => this.setState({ deleteMode: true })}
               onMouseLeave={() => this.setState({ deleteMode: false })}
               style={{
