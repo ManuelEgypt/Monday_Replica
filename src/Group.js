@@ -27,7 +27,6 @@ const Head = styled.div`
 
 const Form = styled.form`
   flex: 1;
-  opacity: ${props => (props.isDrag ? 0 : 1)};
 `;
 const TaskList = styled.div`
   padding: 8px;
@@ -36,8 +35,18 @@ const TaskList = styled.div`
 `;
 
 class Group extends React.Component {
+  componentDidUpdate(oldProps) {
+    const newProps = this.props;
+    if (oldProps.isDrag !== newProps.isDrag) {
+      if (newProps.isDrag)
+        this.setState({ open: !newProps.isDrag, isDrag: newProps.isDrag });
+      else setTimeout(() => this.setState({ open: this.state.openOld }), 500);
+    }
+    console.log("STATE:::::", this.state);
+  }
   state = {
     open: true,
+    openOld: true,
     showButton: false,
     itemName: "",
     showAdd: "",
@@ -53,9 +62,9 @@ class Group extends React.Component {
     console.log(dragg);
   };
 
-  handleMouseOver2 = dragg => {
+  handleMouseOver2 = () => {
     //if (!dragg) setTimeout(() => this.setState({ showAdd: true }), 500);
-    if (!this.props.isDrag) this.setState({ showAdd: true });
+    this.setState({ showAdd: true });
   };
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -66,7 +75,7 @@ class Group extends React.Component {
   };
 
   handleTitleClick = e => {
-    this.setState({ editTitle: true });
+    if (this.props.isDrag) this.setState({ editTitle: true });
   };
 
   handleClickAway = () => {
@@ -75,6 +84,10 @@ class Group extends React.Component {
 
   handleClickAway2 = () => {
     this.setState({ colorSelectMode: false });
+  };
+
+  handleClickAway3 = () => {
+    this.props.UnSetDrag();
   };
 
   changeGroupColor = color => {
@@ -88,10 +101,16 @@ class Group extends React.Component {
 
   render() {
     const Trigger = () => null;
+
     return (
-      <Draggable draggableId={this.props.group.id} index={this.props.index}>
+      <Draggable
+        draggableId={this.props.group.id}
+        index={this.props.index}
+        onMouseUp={() => this.props.UnSetDrag()}
+      >
         {provided => (
           <Container
+            onMouseUp={() => this.props.UnSetDrag()}
             open={this.state.open}
             {...provided.draggableProps}
             ref={provided.innerRef}
@@ -108,12 +127,11 @@ class Group extends React.Component {
               bg={this.state.open}
             >
               <Title
-                {...provided.dragHandleProps}
                 style={{
                   color: this.state.groupColor
                 }}
               >
-                {this.state.showButton ? (
+                {this.state.showButton && !this.props.isDrag ? (
                   <div
                     style={{
                       padding: 5,
@@ -135,7 +153,7 @@ class Group extends React.Component {
                   style={{ display: "flex" }}
                   onMouseLeave={() => this.setState({ showDelete: false })}
                 >
-                  {this.state.showDelete ? (
+                  {this.state.showDelete && !this.props.isDrag ? (
                     <img
                       onClick={() =>
                         this.props.removeGroup(this.props.group.id)
@@ -162,7 +180,7 @@ class Group extends React.Component {
                         }
                         onMouseLeave={() => this.setState({ showEdit: false })}
                         style={
-                          this.state.showEdit
+                          this.state.showEdit && !this.props.isDrag
                             ? { border: "1px dotted grey", padding: 3 }
                             : null
                         }
@@ -193,10 +211,15 @@ class Group extends React.Component {
                   )}
                 </div>
               </Title>
-              {this.state.showButton ? (
+              {this.state.showButton && !this.props.isDrag ? (
                 <>
                   <CollapseButton
-                    onClick={() => this.setState({ open: !this.state.open })}
+                    onClick={() =>
+                      this.setState({
+                        openOld: !this.state.openOld,
+                        open: !this.state.open
+                      })
+                    }
                   >
                     {this.state.open ? (
                       <img
@@ -209,21 +232,6 @@ class Group extends React.Component {
                         src="https://cdn1.iconfinder.com/data/icons/navigation-arrows/512/arrow-twoside-updown-withoutbg-512.png"
                       ></img>
                     )}
-                  </CollapseButton>
-
-                  <CollapseButton
-                  //part of item to be dragged from
-                  >
-                    {this.state.open ? (
-                      <img
-                        style={{
-                          marginTop: 3,
-                          width: 20,
-                          height: 20
-                        }}
-                        src="https://png.pngtree.com/svg/20170817/drag_icon_633892.png"
-                      ></img>
-                    ) : null}
                   </CollapseButton>
 
                   <CollapseButton
@@ -244,10 +252,7 @@ class Group extends React.Component {
                   </CollapseButton>
 
                   {this.state.showAdd ? (
-                    <Form
-                      onSubmit={this.submitHandler}
-                      isDrag={this.state.isDrag}
-                    >
+                    <Form onSubmit={this.submitHandler}>
                       <input
                         type="text"
                         name="itemName"
@@ -279,6 +284,23 @@ class Group extends React.Component {
                   ) : null}
                 </>
               ) : null}
+              <CollapseButton
+                //part of item to be dragged from
+                {...provided.dragHandleProps}
+                onMouseDown={() => this.props.setDrag()}
+                onMouseUp={() => this.props.UnSetDrag()}
+              >
+                {this.props.isDrag ? (
+                  <img
+                    style={{
+                      marginTop: 3,
+                      width: 20,
+                      height: 20
+                    }}
+                    src="https://png.pngtree.com/svg/20170817/drag_icon_633892.png"
+                  ></img>
+                ) : null}
+              </CollapseButton>
             </Head>
             <Droppable droppableId={this.props.group.id} type="task">
               {(provided, snapshot) => (
@@ -301,9 +323,7 @@ class Group extends React.Component {
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                       isDraggingOver={snapshot.isDraggingOver}
-                      onMouseOver={() =>
-                        this.handleMouseOver2(snapshot.isDraggingOver)
-                      }
+                      onMouseOver={() => this.handleMouseOver2()}
                       onMouseLeave={() => this.setState({ showAdd: false })}
                     >
                       {this.props.tasks.map((task, index) => (

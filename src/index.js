@@ -5,6 +5,8 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { AwesomeButton } from "react-awesome-button";
 import { Form } from "react-bootstrap";
 
+import { ClickAwayListener } from "@material-ui/core";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@atlaskit/css-reset";
 import "react-awesome-button/dist/styles.css";
@@ -13,6 +15,18 @@ import initialData from "./data";
 
 class App extends React.Component {
   state = { ...initialData, isDrag: false, groupName: "" };
+
+  setDrag = () => {
+    this.setState({ isDrag: true });
+  };
+
+  handleClickAway3 = () => {
+    this.UnSetDrag();
+  };
+
+  UnSetDrag = () => {
+    this.setState({ isDrag: false });
+  };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -191,6 +205,12 @@ class App extends React.Component {
     console.log("NEW GROUPS!!!!!!!!!!!", newGroups);
   };
 
+  onDragStart = result => {
+    console.log("RESULT DRAG START!!", result);
+    const { type } = result;
+    if (type === "group") this.setState({ isDrag: true });
+  };
+
   onDragEnd = result => {
     //   const result = {
     //     draggableId: '1',
@@ -208,6 +228,7 @@ class App extends React.Component {
 
     const { destination, source, draggableId, type } = result;
     setTimeout(() => console.log("ISDRAG!!", this.state.isDrag), 2000);
+    console.log("STATE AFTER DRAG!!!!!!!!", this.state);
 
     if (!destination) {
       return;
@@ -232,6 +253,7 @@ class App extends React.Component {
       }; //create a new state with the right groupOrder array
 
       this.setState(newState);
+      this.setState({ isDrag: false });
       return;
     }
 
@@ -312,6 +334,15 @@ class App extends React.Component {
             justifyContent: "center"
           }}
         >
+          <ClickAwayListener onClickAway={this.handleClickAway3}>
+            <AwesomeButton
+              style={{ top: 7, marginBottom: 10, height: 38, right: 78 }}
+              type="primary"
+              onPress={this.setDrag}
+            >
+              REARRANGE GROUPS
+            </AwesomeButton>
+          </ClickAwayListener>
           <Form.Group style={{ position: "relative", top: 10, left: 90 }}>
             <Form.Control
               required
@@ -333,7 +364,7 @@ class App extends React.Component {
         </div>
 
         <DragDropContext
-          onDragStart={() => this.setState({ isDrag: true })}
+          onDragStart={this.onDragStart}
           //onDragUpdate={() => this.setState({ isDrag: false })}
           onDragEnd={this.onDragEnd}
         >
@@ -357,6 +388,8 @@ class App extends React.Component {
                       removeTask={this.removeTask}
                       removeGroup={this.removeGroup}
                       index={index}
+                      setDrag={this.setDrag}
+                      UnSetDrag={this.UnSetDrag}
                     />
                   );
                 })}
