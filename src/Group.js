@@ -5,6 +5,9 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import Collapsible from "react-collapsible";
 import ColorSelection from "./ColorSelection";
 
+import { AwesomeButton } from "react-awesome-button";
+import { Form } from "react-bootstrap";
+
 import { ClickAwayListener } from "@material-ui/core";
 
 const Container = styled.div`
@@ -25,7 +28,7 @@ const Head = styled.div`
   background-color: ${props => (props.bg ? "white" : "#e6e6e6")};
 `;
 
-const Form = styled.form`
+const TaskForm = styled.form`
   flex: 1;
 `;
 const TaskList = styled.div`
@@ -40,7 +43,11 @@ class Group extends React.Component {
     if (oldProps.isDrag !== newProps.isDrag) {
       if (newProps.isDrag)
         this.setState({ open: !newProps.isDrag, isDrag: newProps.isDrag });
-      else setTimeout(() => this.setState({ open: this.state.openOld }), 500);
+      else
+        setTimeout(
+          () => this.setState({ open: this.state.openOld, isDrag: false }),
+          500
+        );
     }
     console.log("STATE:::::", this.state);
   }
@@ -54,7 +61,8 @@ class Group extends React.Component {
     editTitle: false,
     titleName: this.props.group.title,
     showEdit: false,
-    groupColor: this.props.group.color
+    groupColor: this.props.group.color,
+    inputExpand: false
   };
 
   handleMouseOver = dragg => {
@@ -75,7 +83,8 @@ class Group extends React.Component {
   };
 
   handleTitleClick = e => {
-    if (this.props.isDrag) this.setState({ editTitle: true });
+    if (!this.state.isDrag)
+      this.setState({ editTitle: true, titleNameOld: this.props.group.title });
   };
 
   handleClickAway = () => {
@@ -99,8 +108,39 @@ class Group extends React.Component {
     this.setState({ itemName: "" });
   };
 
+  handleKeyDown = e => {
+    if (this.state.inputExpand) {
+      if (e.key === "Enter") {
+        this.props.addTask(this.props.group, this.state.itemName);
+        this.setState({ itemName: "" });
+      }
+      if (e.key === "Escape") {
+        this.setState({ itemName: "" });
+      }
+    }
+
+    if (this.state.editTitle) {
+      if (e.key === "Enter") {
+        this.handleClickAway();
+      }
+      if (e.key === "Escape") {
+        this.setState({ editTitle: false, titleName: this.state.titleNameOld });
+      }
+    }
+  };
+
   render() {
     const Trigger = () => null;
+
+    const inputStyle = {
+      width: `${
+        this.state.inputExpand ? window.innerWidth * 0.975 + "px" : "100px"
+      }`,
+      opacity: `${this.state.inputExpand ? "1" : "0.4"}`,
+
+      transitionProperty: "width",
+      transitionDuration: "1s"
+    };
 
     return (
       <Draggable
@@ -191,6 +231,7 @@ class Group extends React.Component {
                   ) : (
                     <ClickAwayListener onClickAway={this.handleClickAway}>
                       <input
+                        onKeyDown={this.handleKeyDown}
                         type="text"
                         name="titleName"
                         style={{
@@ -233,55 +274,6 @@ class Group extends React.Component {
                       ></img>
                     )}
                   </CollapseButton>
-
-                  <CollapseButton
-                    onClick={() =>
-                      this.setState({ showAdd: !this.state.showAdd })
-                    }
-                  >
-                    {this.state.open ? (
-                      <img
-                        style={{
-                          marginTop: 3,
-                          width: 20,
-                          height: 20
-                        }}
-                        src="https://cdn1.iconfinder.com/data/icons/ui-colored-1/100/UI__2-512.png"
-                      ></img>
-                    ) : null}
-                  </CollapseButton>
-
-                  {this.state.showAdd ? (
-                    <Form onSubmit={this.submitHandler}>
-                      <input
-                        type="text"
-                        name="itemName"
-                        style={{
-                          position: "relative",
-                          width: "50%",
-                          padding: "8px",
-                          bottom: 7
-                        }}
-                        placeholder="Add new Task"
-                        value={this.state.itemName}
-                        onChange={this.changeHandler}
-                      />
-
-                      {this.state.itemName ? (
-                        <img
-                          onClick={this.handleAdd}
-                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Fairytale_button_add.svg/1024px-Fairytale_button_add.svg.png"
-                          style={{
-                            height: 31,
-                            width: 31,
-                            position: "relative",
-                            right: 40,
-                            bottom: 7
-                          }}
-                        ></img>
-                      ) : null}
-                    </Form>
-                  ) : null}
                 </>
               ) : null}
               <CollapseButton
@@ -343,9 +335,37 @@ class Group extends React.Component {
                 </>
               )}
             </Droppable>
-            {/* <div
-              style={{ width: 100, height: 100, backgroundColor: "red" }}
-            ></div> */}
+            {this.state.open ? (
+              <div style={{ display: "flex" }}>
+                <Form.Group style={{ position: "relative", top: 10, left: 10 }}>
+                  <ClickAwayListener
+                    onClickAway={() => this.setState({ inputExpand: false })}
+                  >
+                    <Form.Control
+                      onKeyDown={this.handleKeyDown}
+                      onClick={() => this.setState({ inputExpand: true })}
+                      required
+                      name="itemName"
+                      onChange={this.changeHandler}
+                      value={this.state.itemName}
+                      type="text"
+                      placeholder="+ ADD"
+                      style={inputStyle}
+                      inputExpand={this.state.inputExpand}
+                    />
+                  </ClickAwayListener>
+                </Form.Group>
+                {this.state.inputExpand ? (
+                  <AwesomeButton
+                    style={{ top: 10, marginBottom: 10, height: 38, right: 52 }}
+                    type="primary"
+                    onPress={this.handleAdd}
+                  >
+                    ADD
+                  </AwesomeButton>
+                ) : null}
+              </div>
+            ) : null}
           </Container>
         )}
       </Draggable>

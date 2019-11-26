@@ -16,6 +16,15 @@ import initialData from "./data";
 class App extends React.Component {
   state = { ...initialData, isDrag: false, groupName: "" };
 
+  handleKeyDown = e => {
+    if (e.key === "Enter") {
+      this.handleSubmit();
+    }
+    if (e.key === "Escape") {
+      this.setState({ groupName: "" });
+    }
+  };
+
   setDrag = () => {
     this.setState({ isDrag: true });
   };
@@ -32,7 +41,10 @@ class App extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   handleSubmit = () => {
-    if (this.state.groupName) this.addGroup(this.state.groupName);
+    if (this.state.groupName) {
+      this.addGroup(this.state.groupName);
+      this.setState({ groupName: "" });
+    }
   };
 
   addTask = (group, content) => {
@@ -345,12 +357,14 @@ class App extends React.Component {
           </ClickAwayListener>
           <Form.Group style={{ position: "relative", top: 10, left: 90 }}>
             <Form.Control
+              onKeyDown={this.handleKeyDown}
               required
               name="groupName"
               onChange={this.handleChange}
               type="text"
               placeholder="Group Name"
               style={{ width: 400 }}
+              value={this.state.groupName}
             />
           </Form.Group>
 
