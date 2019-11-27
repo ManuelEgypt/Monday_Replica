@@ -76,8 +76,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - [x] Add new task
 - [x] Remove existing task
 - [x] Edit Task content
-- [ ] Add Task owner
-- [ ] Edit Task owner
+- [x] Add Task owner
+- [x] Edit Task owner
 - [ ] Add Task status
 - [ ] Edit Task status
 - [ ] Add Task dueDate
