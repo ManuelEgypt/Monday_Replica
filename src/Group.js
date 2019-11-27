@@ -331,6 +331,7 @@ class Group extends React.Component {
                           group={this.props.group}
                           removeTask={this.props.removeTask}
                           colorSelectMode={this.state.colorSelectMode}
+                          members={this.props.members}
                         />
                       ))}
 

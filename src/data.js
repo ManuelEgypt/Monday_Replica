@@ -44,13 +44,39 @@
 // };
 
 const data = {
+  members: [
+    {
+      id: 1,
+      name: "Manuel",
+      pic:
+        "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
+      color: "green"
+    },
+    {
+      id: 2,
+      name: "Badr",
+      pic:
+        "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
+      color: "maroon"
+    },
+    {
+      id: 3,
+      name: "Elon",
+      pic:
+        "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
+      color: "orange"
+    }
+  ],
+
   tasks: [
     {
       id: "1",
       content: "create a moday interface",
+      owner: 1,
       ownerName: "Manuel",
       ownerPic:
         "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
+      ownerColor: "green",
       status: "In Progress",
       dueDate: "2020-2-2",
       priority: "high"
@@ -58,7 +84,9 @@ const data = {
     {
       id: "2",
       content: "enjoy the moday interface",
+      owner: 2,
       ownerName: "Bader",
+      ownerColor: "maroon",
       ownerPic:
         "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
       status: "Upcoming",
@@ -68,6 +96,7 @@ const data = {
     {
       id: "3",
       content: "nothing else to do",
+      owner: 1,
       ownerName: "Manuel",
       ownerPic:
         "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
@@ -78,6 +107,7 @@ const data = {
     {
       id: "7",
       content: "drive a tesla",
+      owner: 3,
       ownerName: "Musk",
       ownerPic:
         "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",

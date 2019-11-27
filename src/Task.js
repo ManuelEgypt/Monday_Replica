@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { ClickAwayListener } from "@material-ui/core";
 
+import MemberModal from "./memberModal";
+
 const Container = styled.div`
   background-color: #f2f2f2;
   opacity: ${props => (props.isDragging ? 0.6 : 1)}
@@ -39,8 +41,20 @@ class Task extends React.Component {
   state = {
     editMode: false,
     taskContent: this.props.task.content,
-    deleteMode: false
+    deleteMode: false,
+    focus: false,
+    memberSelection: false
   };
+
+  memberSelection = () => {
+    this.setState({ memberSelection: false });
+  };
+
+  handleClickMember = () => {
+    if (this.taskMember) alert("delete member");
+    else this.setState({ memberSelection: true });
+  };
+
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -53,6 +67,10 @@ class Task extends React.Component {
   handleClickAway = () => {
     this.setState({ editEnabled: false });
   };
+
+  taskMember = this.props.members.find(
+    member => member.id === this.props.task.owner
+  );
   render() {
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>
@@ -177,21 +195,64 @@ class Task extends React.Component {
                 ) : null}
               </div>
             </ContentSection>
-            <OwnerSection>
+            <OwnerSection onMouseLeave={() => this.setState({ focus: false })}>
               {" "}
-              <img
+              <div
+                onMouseOver={() => this.setState({ focus: true })}
                 style={{
                   width: "30px",
                   height: "30px",
                   borderRadius: 20,
-                  border: "1px solid black",
+                  border: `1px solid ${
+                    this.taskMember ? this.taskMember.color : null
+                  }`,
                   position: "relative",
                   top: 3,
-                  opacity: 0.8,
-                  left: 6
+                  opacity: 1,
+                  left: 6,
+                  backgroundColor: this.taskMember
+                    ? this.taskMember.color
+                    : null,
+                  fontSize: 20,
+                  textAlign: "center",
+                  color: "white",
+                  weight: "900"
                 }}
-                src={this.props.task.ownerPic}
-              ></img>
+              >
+                {this.taskMember ? this.taskMember.name[0] : null}
+              </div>
+              {this.state.focus ? (
+                <div
+                  onClick={this.handleClickMember}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    position: "relative",
+                    marginLeft: 30,
+                    bottom: 32,
+                    backgroundColor: this.taskMember ? "blue" : "green",
+                    padding: 8,
+                    borderRadius: 20
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      bottom: 11,
+                      right: this.taskMember ? 3 : 5,
+                      color: "white"
+                    }}
+                  >
+                    {this.taskMember ? "x" : "+"}
+                  </div>
+                </div>
+              ) : null}
+              {this.state.memberSelection ? (
+                <MemberModal
+                  members={this.props.members}
+                  memberSelection={this.memberSelection}
+                />
+              ) : null}
             </OwnerSection>
           </Container>
         )}

@@ -4,6 +4,7 @@ import Group from "./Group";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { AwesomeButton } from "react-awesome-button";
 import { Form } from "react-bootstrap";
+import MemberCircle from "./memberCircle";
 
 import { ClickAwayListener } from "@material-ui/core";
 
@@ -45,6 +46,33 @@ class App extends React.Component {
       this.addGroup(this.state.groupName);
       this.setState({ groupName: "" });
     }
+  };
+
+  selectMember = (task, memberID) => {
+    const newTask = {
+      ...task,
+      owner: memberID
+    }; //create a new task with the right owner
+
+    let index = 0;
+
+    this.state.tasks.forEach((tsk, ind) => {
+      if (tsk.id === task.id) {
+        index = ind;
+      }
+    });
+
+    const newTaskList = this.state.tasks.filter(tsk => tsk.id != task.id); //remove old task containing the old selected task
+
+    newTaskList.splice(index, 0, newTask); // add new task to new tasks array
+
+    console.log("NEW TASK LIST!!!", newTaskList);
+
+    const newState = {
+      ...this.state,
+      tasks: newTaskList
+    }; //create a new state with the right tasks array
+    this.setState(newState);
   };
 
   addTask = (group, content) => {
@@ -238,6 +266,22 @@ class App extends React.Component {
     // },
     // }
 
+    this.selectMember(
+      {
+        id: "1",
+        content: "create a moday interface",
+        owner: "",
+        ownerName: "Manuel",
+        ownerPic:
+          "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",
+        ownerColor: "green",
+        status: "In Progress",
+        dueDate: "2020-2-2",
+        priority: "high"
+      },
+      2
+    );
+
     const { destination, source, draggableId, type } = result;
     setTimeout(() => console.log("ISDRAG!!", this.state.isDrag), 2000);
     console.log("STATE AFTER DRAG!!!!!!!!", this.state);
@@ -375,6 +419,10 @@ class App extends React.Component {
           >
             CREATE NEW GROUP
           </AwesomeButton>
+
+          {this.state.members.map((member, index) => (
+            <MemberCircle member={member} index={index} />
+          ))}
         </div>
 
         <DragDropContext
@@ -404,6 +452,7 @@ class App extends React.Component {
                       index={index}
                       setDrag={this.setDrag}
                       UnSetDrag={this.UnSetDrag}
+                      members={this.state.members}
                     />
                   );
                 })}
