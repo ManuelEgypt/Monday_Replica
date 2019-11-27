@@ -5,14 +5,15 @@ class memberModal extends React.Component {
     focus: false
   };
 
-  handleMemberClick = () => {
-    this.props.memberSelection();
+  handleMemberClick = (task, taskMemberID) => {
+    this.props.memberSelection(task, taskMemberID);
   };
+
   render() {
     return (
       <div
         style={{
-          position: "relative",
+          position: "absolute",
           marginLeft: 40,
           backgroundColor: "white",
           padding: 10,
@@ -26,7 +27,7 @@ class memberModal extends React.Component {
             style={{ display: "flex", marginBottom: 10 }}
             onMouseOver={() => this.setState({ focus: true })}
             onMouseLeave={() => this.setState({ focus: false })}
-            onClick={this.handleMemberClick}
+            onClick={() => this.handleMemberClick(this.props.task, member.id)}
           >
             <div
               style={{

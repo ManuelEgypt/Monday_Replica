@@ -75,6 +75,31 @@ class App extends React.Component {
     this.setState(newState);
   };
 
+  removeMember = task => {
+    const newTask = {
+      ...task,
+      owner: ""
+    }; //create a new task with the no owner
+
+    let index = 0;
+
+    this.state.tasks.forEach((tsk, ind) => {
+      if (tsk.id === task.id) {
+        index = ind;
+      }
+    });
+
+    const newTaskList = this.state.tasks.filter(tsk => tsk.id != task.id); //remove old task containing the old selected task
+
+    newTaskList.splice(index, 0, newTask); // add new task to new tasks array
+
+    const newState = {
+      ...this.state,
+      tasks: newTaskList
+    }; //create a new state with the right tasks array
+    this.setState(newState);
+  };
+
   addTask = (group, content) => {
     const newTaskIDs = Array.from(group.taskIDs);
     let id = 0;
@@ -453,6 +478,8 @@ class App extends React.Component {
                       setDrag={this.setDrag}
                       UnSetDrag={this.UnSetDrag}
                       members={this.state.members}
+                      selectMember={this.selectMember}
+                      removeMember={this.removeMember}
                     />
                   );
                 })}

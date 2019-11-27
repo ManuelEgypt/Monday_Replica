@@ -72,7 +72,7 @@ const data = {
     {
       id: "1",
       content: "create a moday interface",
-      owner: 1,
+      owner: "",
       ownerName: "Manuel",
       ownerPic:
         "https://format-com-cld-res.cloudinary.com/image/private/s--nHDGSD97--/c_limit,g_center,h_550,w_65535/a_auto,fl_keep_iptc.progressive,q_95/v1/accdfbbd9f44e8b739925b9bb184ce74/14_Boelitz-PortraitsandPeople-2018.jpg",

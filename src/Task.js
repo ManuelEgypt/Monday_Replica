@@ -38,6 +38,24 @@ const OwnerSection = styled.div`
 // }
 
 class Task extends React.Component {
+  componentWillMount() {
+    const m = this.props.members.find(
+      member => member.id === this.props.task.owner
+    );
+
+    console.log("member!!!!!", m);
+    this.setState({ taskMember: m });
+  }
+
+  componentDidUpdate(oldProps) {
+    const newProps = this.props;
+    if (oldProps.task !== newProps.task) {
+      this.taskMember = newProps.members.find(
+        member => member.id === this.props.task.owner
+      );
+    }
+  }
+
   state = {
     editMode: false,
     taskContent: this.props.task.content,
@@ -46,12 +64,17 @@ class Task extends React.Component {
     memberSelection: false
   };
 
-  memberSelection = () => {
+  taskMember = this.props.members.find(
+    member => member.id === this.props.task.owner
+  );
+
+  memberSelection = (task, taskMemberID) => {
     this.setState({ memberSelection: false });
+    this.props.selectMember(task, taskMemberID);
   };
 
   handleClickMember = () => {
-    if (this.taskMember) alert("delete member");
+    if (this.taskMember) this.props.removeMember(this.props.task);
     else this.setState({ memberSelection: true });
   };
 
@@ -68,10 +91,12 @@ class Task extends React.Component {
     this.setState({ editEnabled: false });
   };
 
-  taskMember = this.props.members.find(
-    member => member.id === this.props.task.owner
-  );
+  handleClickAway2 = () => {
+    this.setState({ memberSelection: false });
+  };
+
   render() {
+    console.log("STATE!!!!", this.state);
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>
         {(provided, snapshot) => (
@@ -92,7 +117,8 @@ class Task extends React.Component {
                 }`,
                 position: "reative",
                 border: "3px solid white",
-                right: 5
+                right: 5,
+                cursor: "pointer"
               }}
             ></div>
             {!this.props.colorSelectMode ? (
@@ -104,7 +130,8 @@ class Task extends React.Component {
                   position: "absolute",
                   left: 22,
                   marginTop: 10,
-                  opacity: `${this.state.deleteMode ? "1" : "0"}`
+                  opacity: `${this.state.deleteMode ? "1" : "0"}`,
+                  cursor: "pointer"
                 }}
               ></img>
             ) : null}
@@ -117,7 +144,8 @@ class Task extends React.Component {
                 backgroundColor: "green",
                 opacity: 0,
                 width: 35,
-                height: 40
+                height: 40,
+                cursor: "pointer"
               }}
             ></div>
             <ContentSection
@@ -178,7 +206,8 @@ class Task extends React.Component {
                             padding: "6px",
                             position: "relative",
                             right: 17,
-                            bottom: 2
+                            bottom: 2,
+                            cursor: "pointer"
                           }
                         : {
                             marginLeft: 17,
@@ -197,30 +226,35 @@ class Task extends React.Component {
             </ContentSection>
             <OwnerSection onMouseLeave={() => this.setState({ focus: false })}>
               {" "}
-              <div
-                onMouseOver={() => this.setState({ focus: true })}
-                style={{
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: 20,
-                  border: `1px solid ${
-                    this.taskMember ? this.taskMember.color : null
-                  }`,
-                  position: "relative",
-                  top: 3,
-                  opacity: 1,
-                  left: 6,
-                  backgroundColor: this.taskMember
-                    ? this.taskMember.color
-                    : null,
-                  fontSize: 20,
-                  textAlign: "center",
-                  color: "white",
-                  weight: "900"
-                }}
-              >
-                {this.taskMember ? this.taskMember.name[0] : null}
-              </div>
+              {this.taskMember ? (
+                <div
+                  onMouseOver={() => this.setState({ focus: true })}
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: 20,
+                    position: "relative",
+                    top: 3,
+                    opacity: 1,
+                    left: 6,
+                    backgroundColor: this.taskMember
+                      ? this.taskMember.color
+                      : null,
+                    fontSize: 20,
+                    textAlign: "center",
+                    color: "white",
+                    weight: "900"
+                  }}
+                >
+                  {this.taskMember.name[0]}
+                </div>
+              ) : (
+                <img
+                  onMouseOver={() => this.setState({ focus: true })}
+                  style={{ width: 35, height: 35, marginLeft: 3, opacity: 0.4 }}
+                  src="https://www.freeiconspng.com/uploads/person-outline-icon-png-person-outline-icon-png-person-17.png"
+                ></img>
+              )}
               {this.state.focus ? (
                 <div
                   onClick={this.handleClickMember}
@@ -230,9 +264,10 @@ class Task extends React.Component {
                     position: "relative",
                     marginLeft: 30,
                     bottom: 32,
-                    backgroundColor: this.taskMember ? "blue" : "green",
+                    backgroundColor: this.taskMember ? "red" : "green",
                     padding: 8,
-                    borderRadius: 20
+                    borderRadius: 20,
+                    cursor: "pointer"
                   }}
                 >
                   <div
@@ -248,10 +283,13 @@ class Task extends React.Component {
                 </div>
               ) : null}
               {this.state.memberSelection ? (
-                <MemberModal
-                  members={this.props.members}
-                  memberSelection={this.memberSelection}
-                />
+                <ClickAwayListener onClickAway={this.handleClickAway2}>
+                  <MemberModal
+                    members={this.props.members}
+                    memberSelection={this.memberSelection}
+                    task={this.props.task}
+                  />
+                </ClickAwayListener>
               ) : null}
             </OwnerSection>
           </Container>

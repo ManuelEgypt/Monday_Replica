@@ -184,7 +184,8 @@ class Group extends React.Component {
                       width: 20,
                       height: 20,
                       backgroundColor: this.state.groupColor,
-                      borderRadius: 6
+                      borderRadius: 6,
+                      cursor: "pointer"
                     }}
                     onClick={() =>
                       this.setState({
@@ -207,7 +208,8 @@ class Group extends React.Component {
                         height: 20,
                         width: 20,
                         marginRight: 5,
-                        marginTop: 3
+                        marginTop: 3,
+                        cursor: "pointer"
                       }}
                     ></img>
                   ) : null}
@@ -268,12 +270,17 @@ class Group extends React.Component {
                   >
                     {this.state.open ? (
                       <img
-                        style={{ width: 25, height: 25 }}
+                        style={{ width: 25, height: 25, cursor: "pointer" }}
                         src="https://icon-library.net/images/collapse-expand-icon/collapse-expand-icon-15.jpg"
                       ></img>
                     ) : (
                       <img
-                        style={{ marginTop: 2, width: 25, height: 25 }}
+                        style={{
+                          marginTop: 2,
+                          width: 25,
+                          height: 25,
+                          cursor: "pointer"
+                        }}
                         src="https://cdn1.iconfinder.com/data/icons/navigation-arrows/512/arrow-twoside-updown-withoutbg-512.png"
                       ></img>
                     )}
@@ -332,6 +339,8 @@ class Group extends React.Component {
                           removeTask={this.props.removeTask}
                           colorSelectMode={this.state.colorSelectMode}
                           members={this.props.members}
+                          selectMember={this.props.selectMember}
+                          removeMember={this.props.removeMember}
                         />
                       ))}
 
