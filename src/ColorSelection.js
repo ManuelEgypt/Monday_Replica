@@ -21,7 +21,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
           ></div>
 
@@ -32,7 +33,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
           ></div>
 
@@ -43,7 +45,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
           ></div>
         </div>
@@ -55,7 +58,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("orange")}
           ></div>
@@ -66,7 +70,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("purple")}
           ></div>
@@ -77,7 +82,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("#e05aa8")}
           ></div>
@@ -90,7 +96,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("#929696")}
           ></div>
@@ -101,7 +108,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("#5c5c5c")}
           ></div>
@@ -112,7 +120,8 @@ class ColorSelection extends React.Component {
               borderRadius: 20,
               width: 20,
               height: 20,
-              marginRight: 3
+              marginRight: 3,
+              cursor: "pointer"
             }}
             onClick={() => this.props.changeGroupColor("black")}
           ></div>
