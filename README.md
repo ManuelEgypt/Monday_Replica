@@ -120,6 +120,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 - [x] pressing color selection box opens color selection modal
 - [x] selecting color closes color selection modal
 - [x] pressing outside color selection modal closes modal
+- [x] same open close procedure for member selection
+- [x] hover through members on top right
 - [x] pressing enter when group title imput is empty doenst create group
 - [x] pressing escape discards text in group input
 - [x] creating new group assigns random color to it
